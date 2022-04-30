@@ -8,10 +8,10 @@ export const login = data => {
   })
 }
 
-export const SMS = mobile => {
-  return request({
-    method: 'GET',
-    url: `/v1_0/sms/codes/${mobile}`,
-    mobile
-  })
-}
+// export const SMS = mobile => {
+//   return request({
+//     method: 'GET',
+//     url: `/v1_0/sms/codes/${mobile}`,
+//     mobile
+//   })
+// }
