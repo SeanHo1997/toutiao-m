@@ -7,12 +7,20 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login')
+    component: () => import('@/views/login/index.vue')
   },
   {
-    path: '/index',
-    name: 'index',
-    component: () => import('@/views/index')
+    path: '/',
+    name: 'layout',
+    redirect: 'index',
+    component: () => import('@/views/layout/index.vue'),
+    children: [
+      // 默认子路由
+      { path: 'index', component: () => import('@/views/layout/index/index.vue') },
+      { path: 'profile', name: 'profile', component: () => import('@/views/layout/profile/index.vue') },
+      { path: 'qa', name: 'qa', component: () => import('@/views/layout/qa/index.vue') },
+      { path: 'video', name: 'video', component: () => import('@/views/layout/video/index.vue') }
+    ]
   }
 ]
 

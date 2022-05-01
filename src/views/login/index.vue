@@ -82,7 +82,9 @@ export default {
         // 通过接口向服务器提交账号和密码
         const { data: { data } } = await login(this.user)
         // 里面是token和refreshToken
-        this.$store.commit(data)
+        this.$toast.success('登录成功')
+        this.$router.push('/')
+        this.$store.commit('setToken', data)
       } catch (err) {
         if (err.response.status === 400) {
           return this.$toast.fail('验证码不正确')
