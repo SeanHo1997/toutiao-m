@@ -1,6 +1,6 @@
 <template>
   <div class="login-containner">
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" ref="loginForm">
       <!-- 导航栏 -->
       <van-nav-bar
       title="登录"
@@ -13,7 +13,9 @@
           v-model="user.mobile"
           name="mobile"
           placeholder="请输入手机号"
-          :rules="[{ required:true, message: '手机号不能为空', trigger: onBlur }]"
+          :rules="[{ required: true, message: '手机号不能为空', trigger: 'onBlur' },
+          { pattern:/^1[3-9]\d{9}$/, message: '手机号格式错误', trigger: 'onBlur' }
+          ]"
         >
           <i slot="left-icon" class="toutiao toutiao-shouji"></i>
         </van-field>
@@ -22,13 +24,20 @@
           name="code"
           v-model="user.code"
           placeholder="请输入验证码"
+          :rules="[{ required: true, message: '验证码不能为空', trigger: 'onBlur' },
+          { pattern:/\d{6}/, message: '验证码格式错误', trigger: 'onBlur' }
+          ]"
         >
           <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
+          <template #button>
+            <van-count-down :time="time" format="ss 秒" v-if="isCountDownShow" @finish="isCountDownShow = false"/>
+            <van-button size="small" type="default" class="sendBtn"  native-type="button" round v-else @click="onSendSMS">发送验证码</van-button>
+          </template>
         </van-field>
       </van-cell-group>
       <!-- 输入框 -->
       <!-- 登录按钮 -->
-      <van-button class="loginBtn" type="info" native-type="submit">登录</van-button>
+      <van-button class="loginBtn" type="info">登录</van-button>
       <!-- 登录按钮 -->
       <!-- 隐私条款 -->
       <p class="privacy">隐私条款 验证码246810</p>
@@ -38,6 +47,7 @@
 </template>
 
 <script>
+import { sendSMS, login } from '@/api/login.js'
 export default {
   name: 'loginCom',
   data () {
@@ -45,6 +55,40 @@ export default {
       user: {
         mobile: '13800000000',
         code: '246810'
+      },
+      time: 5 * 1000,
+      isCountDownShow: false
+    }
+  },
+  methods: {
+    // 点击获取验证码
+    async onSendSMS () {
+      // 验证手机号是否存在（通过组件的validate方法同时传入name属性值
+      try {
+        this.$refs.loginForm.validate('mobile')
+      } catch {
+        return this.$toast.fail('手机号不正确')
+      }
+      try {
+        await sendSMS(this.user.mobile)
+        this.isCountDownShow = true
+      } catch (err) {
+        return this.$toast.fail('手机号不存在')
+      }
+    },
+    // 点击登录
+    async onSubmit () {
+      try {
+        // 通过接口向服务器提交账号和密码
+        const { data: { data } } = await login(this.user)
+        // 里面是token和refreshToken
+        this.$store.commit(data)
+      } catch (err) {
+        if (err.response.status === 400) {
+          return this.$toast.fail('验证码不正确')
+        } else if (err.response.status === 507) {
+          return this.$toast('服务器数据库异常')
+        }
       }
     }
   }
@@ -58,12 +102,12 @@ export default {
       .toutiao {
         font-size: 37px;
       }
-      .sms {
+      /deep/.sendBtn {
         width: 162px;
         height: 46px;
         line-height: 46px;
         background-color: #ededed;
-        font-size: 12px;
+        font-size: 4px;
       }
     }
   }
