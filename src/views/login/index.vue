@@ -1,6 +1,6 @@
 <template>
   <div class="login-containner">
-    <van-form @submit="onSubmit" ref="loginForm">
+    <van-form @submit="onSubmit">
       <!-- 导航栏 -->
       <van-nav-bar
       title="登录"
@@ -13,6 +13,7 @@
           v-model="user.mobile"
           name="mobile"
           placeholder="请输入手机号"
+          :rules="[{ required:true, message: '手机号不能为空', trigger: onBlur }]"
         >
           <i slot="left-icon" class="toutiao toutiao-shouji"></i>
         </van-field>
