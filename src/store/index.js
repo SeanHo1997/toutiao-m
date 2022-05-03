@@ -3,17 +3,17 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const Token = 'USER-TOKEN'
+
 export default new Vuex.Store({
   state: {
-    token: JSON.parse(window.localStorage.getItem('USER-TOKEN'))
-  },
-  getters: {
+    token: JSON.parse(window.localStorage.getItem(Token)) || null
   },
   mutations: {
-    setToken (state, data) {
-      state.token = data
+    setToken (state, val) {
+      state.token = val
       // 此时还需要把token存储到本地中
-      window.localStorage.setItem('USER-TOKEN', JSON.stringify(data))
+      window.localStorage.setItem(Token, JSON.stringify(state.token))
     }
   },
   actions: {

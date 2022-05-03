@@ -8,7 +8,9 @@ const request = axios.create({
 
 // 通过请求拦截器同一设置Authorization
 request.interceptors.request.use(function (config) {
-  config.headers.Authorization = `Bearer ${store.state.token.token}`
+  if (store.state.token && store.state.token.token) {
+    config.headers.Authorization = `Bearer ${store.state.token.token}`
+  }
   return config
 }, function (error) {
   // 如果请求出错

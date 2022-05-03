@@ -21,6 +21,17 @@ const routes = [
       { path: 'qa', name: 'qa', component: () => import('@/views/layout/qa/index.vue') },
       { path: 'video', name: 'video', component: () => import('@/views/layout/video/index.vue') }
     ]
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('@/views/layout/index/search/Search.vue')
+  },
+  {
+    path: '/article/:article_id',
+    name: 'article',
+    component: () => import('@/views/layout/index/articleList/articleDetail/index.vue'),
+    props: true
   }
 ]
 

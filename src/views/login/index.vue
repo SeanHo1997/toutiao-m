@@ -83,9 +83,10 @@ export default {
         const { data: { data } } = await login(this.user)
         // 里面是token和refreshToken
         this.$toast.success('登录成功')
-        this.$router.push('/')
         this.$store.commit('setToken', data)
+        this.$router.push('/')
       } catch (err) {
+        console.log('登录失败', err)
         if (err.response.status === 400) {
           return this.$toast.fail('验证码不正确')
         } else if (err.response.status === 507) {
