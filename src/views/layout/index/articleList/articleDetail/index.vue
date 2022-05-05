@@ -45,7 +45,7 @@
           <Follow
           :is_followed="articleData.is_followed"
           :aut_id="articleData.aut_id"
-          @updateIsFollowed="update()"
+          @updateIsFollowed="articleData.is_followed=!articleData.is_followed"
           >
           </Follow>
         </van-cell>
@@ -59,6 +59,15 @@
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
+      <!-- 评论列表 -->
+      <CommentList
+      :source="article_id"
+      @sendCommnetCount="getCommentCount"
+      :newObj = "newObj"
+      @showSecondaryComment="showSecondaryComment=true"
+      @sendCommentInfo="commentInfo=$event"
+      />
+      <!-- /评论列表 -->
 
       <!-- 加载失败：404 -->
       <div class="error-wrap" v-if="httpCode===404">
@@ -73,23 +82,60 @@
           type="default"
           round
           size="small"
+          @click="show = true"
         >写评论</van-button>
         <van-icon
           name="comment-o"
-          badge=123
+          :badge="this.commnetCount"
           color="#777"
         />
         <Collect
-        v-model="articleData.is_collected"
-        @changeCollected="articleData.is_collected=!articleData.is_collected"
+        :isCollected="articleData.is_collected"
+        :articleID="this.articleData.art_id"
+        @changeCollect="articleData.is_collected=!articleData.is_collected"
         ></Collect>
-        <van-icon
-          color="#777"
-          name="good-job-o"
-        />
+        <Like
+        :islike="articleData.attitude"
+        :articleID="articleData.art_id"
+        @changeLike="articleData.attitude = -1"
+        @changeUnlike="articleData.attitude = 1"
+        ></Like>
         <van-icon name="share" color="#777777"></van-icon>
       </div>
       <!-- /底部区域 -->
+
+      <!-- 评论编辑弹出层 -->
+      <van-popup
+        v-model="show"
+        close-icon-position="top-right"
+        position="bottom"
+      >
+        <CommentPopup
+        :target="articleData.art_id"
+        @closePopup="show = false"
+        @newComment="newObj = $event"
+        ></CommentPopup>
+      </van-popup>
+      <!-- /评论编辑弹出层 -->
+
+      <!-- 二级评论弹出层 -->
+      <van-popup
+        v-model="showSecondaryComment"
+        position="bottom"
+        :style="{ height: '80%' }"
+      >
+        <SecondaryComment
+        :commentInfo="commentInfo"
+        @closePopup="showSecondaryComment=false"
+        v-if="showSecondaryComment"
+        :articleID="articleData.art_id"
+        @update-reply-count="commentInfo.reply_count ++"
+        ></SecondaryComment>
+          <!-- 由于弹出层默认为懒渲染，所以在关闭弹出层后，
+          里面的组件不会被销毁，一直会存在，当下次点击其他评论时，底下的回复数据不会更变，
+          所以需要加一个v-if让它动态创建销毁。以达到实时渲染更新最新数据 -->
+      </van-popup>
+      <!-- /二级评论弹出层 -->
 
       <!-- 加载失败：其它未知错误（例如网络原因或服务端异常） -->
       <div class="error-wrap" v-if="httpCode===507">
@@ -106,11 +152,20 @@
 import { getArticleDetail } from '@/api/article.js'
 import Follow from '@/components/Follow.vue'
 import Collect from '@/components/Collect.vue'
+import Like from '@/components/Like.vue'
+import CommentList from '@/components/CommentList.vue'
+import CommentPopup from '@/components/CommentPopup.vue'
+
+import SecondaryComment from '@/components/SecondaryComment.vue'
 
 export default {
   components: {
     Follow,
-    Collect
+    Collect,
+    Like,
+    CommentList,
+    CommentPopup,
+    SecondaryComment
   },
   name: 'ArticleDetail',
   props: {
@@ -140,15 +195,20 @@ export default {
         }
       }
     },
-    update () {
-      this.articleData.is_followed = !this.articleData.is_followed
+    getCommentCount (val) {
+      this.commnetCount = val
     }
   },
   data () {
     return {
       articleData: {},
       loaded: false,
-      httpCode: 0
+      httpCode: 0,
+      commnetCount: 0,
+      show: false,
+      newObj: {},
+      showSecondaryComment: false,
+      commentInfo: {}
     }
   }
 }

@@ -15,7 +15,6 @@ const routes = [
     redirect: 'index',
     component: () => import('@/views/layout/index.vue'),
     children: [
-      // 默认子路由
       { path: 'index', component: () => import('@/views/layout/index/index.vue') },
       { path: 'profile', name: 'profile', component: () => import('@/views/layout/profile/index.vue') },
       { path: 'qa', name: 'qa', component: () => import('@/views/layout/qa/index.vue') },
@@ -32,6 +31,11 @@ const routes = [
     name: 'article',
     component: () => import('@/views/layout/index/articleList/articleDetail/index.vue'),
     props: true
+  },
+  {
+    path: '/editprofile',
+    name: 'editprofile',
+    component: () => import('@/views/user/edit-profile/EditProfile.vue')
   }
 ]
 

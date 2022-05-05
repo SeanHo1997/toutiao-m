@@ -21,6 +21,7 @@
           type="default"
           class="editProfileBtn"
           round
+          to="/editprofile"
           >编辑资料</van-button>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import request from '@/utils/request.js'
-// import store from '@/store/index.js'
 
 export const getUserData = () => {
   return request({
@@ -32,5 +31,36 @@ export const deleteFollow = target => {
     data: {
       target
     }
+  })
+}
+
+export const editprofile = data => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/profile',
+    data
+  })
+}
+
+export const getUserProfile = () => {
+  return request({
+    method: 'GET',
+    url: '/v1_0/user/profile'
+  })
+}
+
+export const changeUserProfile = data => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/profile',
+    data
+  })
+}
+
+export const updatePhoto = data => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/photo',
+    data
   })
 }

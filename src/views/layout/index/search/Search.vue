@@ -44,7 +44,7 @@ export default {
     return {
       value: '',
       isResultsShow: false,
-      searchHistory: []
+      searchHistory: JSON.parse(window.localStorage.getItem('USER-SEARCH-HISTORIES')) || []
     }
   },
   components: {
@@ -71,6 +71,11 @@ export default {
     },
     deleteAll () {
       this.searchHistory = []
+    }
+  },
+  watch: {
+    searchHistory (newVal) {
+      window.localStorage.setItem('USER-SEARCH-HISTORIES', JSON.stringify(newVal))
     }
   }
 }
