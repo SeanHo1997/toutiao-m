@@ -1,5 +1,5 @@
 <template>
-  <div class="articleList-containner">
+  <div class="articleList-containner" ref="articleList">
     <!-- 下拉刷新(包裹住vanlist) -->
       <van-pull-refresh
         v-model="isRefreshLoading"
@@ -45,7 +45,8 @@ export default {
       timestamp: null,
       error: false,
       isRefreshLoading: false,
-      successText: ''
+      successText: '',
+      scrollTop: 0
     }
   },
   methods: {

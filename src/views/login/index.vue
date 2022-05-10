@@ -84,6 +84,8 @@ export default {
         // 里面是token和refreshToken
         this.$toast.success('登录成功')
         this.$store.commit('setToken', data)
+        // (中途加入代码)清除layout组件缓存，重新渲染
+        this.$store.commit('deletecachePages', 'LayoutCom')
         this.$router.push('/')
       } catch (err) {
         console.log('登录失败', err)

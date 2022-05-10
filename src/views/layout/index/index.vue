@@ -1,29 +1,29 @@
 <template>
   <div class="index-containner">
-    <!-- 导航栏 -->
-    <van-nav-bar class="navBar" fixed>
-      <van-button type="primary" slot="title" class="searchBtn" round to="/search" >
-      <i class="toutiao toutiao-sousuo"></i>
-      搜索
-      </van-button>
-    </van-nav-bar>
-    <!-- 标签页 -->
-    <van-tabs class="tabs">
-      <!-- 汉堡按钮 -->
-      <div class="placeholder" slot="nav-right" ></div>
-      <div class="hamburger" slot="nav-right" >
-        <i class="toutiao toutiao-gengduo"></i>
-      </div>
-      <van-tab
-      class="tab-item"
-      :title="item.name"
-      v-for="item in channels"
-      :key="item.id"
-      >
-        <!-- 文章列表 -->
-        <ArticleList :channels="item"></ArticleList>
-      </van-tab>
-    </van-tabs>
+      <!-- 导航栏 -->
+      <van-nav-bar class="navBar" fixed>
+        <van-button type="primary" slot="title" class="searchBtn" round to="/search" >
+        <i class="toutiao toutiao-sousuo"></i>
+        搜索
+        </van-button>
+      </van-nav-bar>
+      <!-- 标签页 -->
+      <van-tabs class="tabs">
+        <!-- 汉堡按钮 -->
+        <div class="placeholder" slot="nav-right" ></div>
+        <div class="hamburger" slot="nav-right" >
+          <i class="toutiao toutiao-gengduo"></i>
+        </div>
+        <van-tab
+        class="tab-item"
+        :title="item.name"
+        v-for="item in channels"
+        :key="item.id"
+        >
+          <!-- 文章列表 -->
+          <ArticleList :channels="item"></ArticleList>
+        </van-tab>
+      </van-tabs>
   </div>
 </template>
 
@@ -55,6 +55,7 @@ export default {
 <style lang="less" scoped>
 .index-containner {
   padding-top: 174px;
+  padding-bottom: 100px;
   .navBar {
     /deep/.van-nav-bar__content {
       .van-nav-bar__title {

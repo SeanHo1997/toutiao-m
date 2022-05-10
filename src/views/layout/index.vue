@@ -1,6 +1,8 @@
 <template>
   <div class="layout-containner">
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <van-tabbar route class="tabber">
       <van-tabbar-item icon="home-o" to="/index" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-shouye"></i>

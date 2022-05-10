@@ -40,7 +40,7 @@
       position="bottom"
       :style="{ height: '50%' }"
       >
-      <UserGender v-model="userProfile.gender" @closePopup="showBirthday = false" @changeGender="userProfile.gender=$event"/>
+      <UserGender v-model="userProfile.gender" @closePopup="showGender = false" @changeGender="userProfile.gender=$event"/>
     </van-popup>
     <!-- /性别弹出层 -->
     <!-- 生日弹出层 -->
@@ -66,10 +66,10 @@
 
 <script>
 import { getUserProfile } from '@/api/user.js'
-import UserName from '@/views/user/edit-profile/name/UserName.vue'
-import UserGender from '@/views/user/edit-profile/gender/UserGender.vue'
-import UserBirthday from '@/views/user/edit-profile/birthday/UserBirthday.vue'
-import UserAvator from '@/views/user/edit-profile/avator/UserAvator.vue'
+import UserName from '@/views/user/components/UserName.vue'
+import UserGender from '@/views/user/components/UserGender.vue'
+import UserBirthday from '@/views/user/components/UserBirthday.vue'
+import UserAvator from '@/views/user/components/UserAvator.vue'
 export default {
   name: 'UserProfile',
   components: {
