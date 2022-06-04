@@ -78,23 +78,15 @@ export default {
     },
     // 点击登录
     async onSubmit () {
-      try {
-        // 通过接口向服务器提交账号和密码
-        const { data: { data } } = await login(this.user)
-        // 里面是token和refreshToken
-        this.$toast.success('登录成功')
-        this.$store.commit('setToken', data)
-        // (中途加入代码)清除layout组件缓存，重新渲染
-        this.$store.commit('deletecachePages', 'LayoutCom')
-        this.$router.push('/')
-      } catch (err) {
-        console.log('登录失败', err)
-        if (err.response.status === 400) {
-          return this.$toast.fail('验证码不正确')
-        } else if (err.response.status === 507) {
-          return this.$toast('服务器数据库异常')
-        }
-      }
+      // 通过接口向服务器提交账号和密码
+      const { data: { data } } = await login(this.user)
+      // 里面是token和refreshToken
+      this.$toast.success('登录成功')
+      this.$store.commit('setToken', data)
+      // (中途加入代码)清除layout组件缓存，重新渲染
+      // this.$store.commit('deletecachePages', 'LayoutCom')
+      // this.$store.commit('clearCachePages')
+      this.$router.push('/layout/profile')
     }
   }
 }

@@ -15,8 +15,8 @@ const reefreshTokenReq = axios.create({
 
 // 请求拦截器🙆🏻(统一设置Authorization)
 request.interceptors.request.use(function (config) {
-  if (store.state.token && store.state.token.token) {
-    config.headers.Authorization = `Bearer ${store.state.token.token}`
+  if (store.state.userInfo && store.state.userInfo.token) {
+    config.headers.Authorization = `Bearer ${store.state.userInfo.token}`
   }
   return config
 }, function (error) {
@@ -26,21 +26,19 @@ request.interceptors.request.use(function (config) {
 
 // 响应拦截器(解决Token过期问题)
 axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
+  // 响应成功则通过
   return response
 }, async function (error) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
   const status = error.response.status
   if (status === 400) {
     Toast.fail('请求参数异常')
   } else if (status === 507) {
     Toast.fail('服务器数据库异常')
   } else if (status === 401) {
+    Toast.fail('用户认证失败')
     // 401状态码代表认证失败
     // 判断是否有token,无则跳转登录页面
-    if (!store.token) {
+    if (!store.state.userInfo.token) {
       router.replace('/login')
     // 有则用refresh_token请求新的token
     } else {
@@ -49,11 +47,12 @@ axios.interceptors.response.use(function (response) {
           method: 'PUT',
           url: '/app/v1_0/authorizations',
           headers: {
-            Authorization: `Bearer ${store.token.refresh_token}`
+            Authorization: `Bearer ${store.state.userInfo.refresh_token}`
           }
         })
-        store.token = data.data.token
-        store.commit('setToken', store.token)
+        store.state.userInfo.token = data.data.token
+        store.commit('setToken', store.state.userInfo.token)
+        //  ?????
         return request(error.config)
       } catch (err) {
         router.replace('/login')

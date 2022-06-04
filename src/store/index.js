@@ -7,14 +7,18 @@ const Token = 'USER-TOKEN'
 
 export default new Vuex.Store({
   state: {
-    token: JSON.parse(window.localStorage.getItem(Token)) || null,
-    cachePages: ['IndexCom']
+    userInfo: JSON.parse(window.localStorage.getItem(Token)) || null,
+    cachePages: []
   },
   mutations: {
     setToken (state, val) {
-      state.token = val
+      state.userInfo = val
       // 此时还需要把token存储到本地中
-      window.localStorage.setItem(Token, JSON.stringify(state.token))
+      window.localStorage.setItem(Token, JSON.stringify(state.userInfo))
+    },
+    delToken (state) {
+      state.userInfo = null
+      window.localStorage.removeItem(Token)
     },
     addcachePages (state, pageName) {
       if (!state.cachePages.includes(pageName)) {
@@ -26,10 +30,9 @@ export default new Vuex.Store({
       if (index !== -1) {
         state.cachePages.splice(index, 1)
       }
+    },
+    clearCachePages (state) {
+      state.cachePages = []
     }
-  },
-  actions: {
-  },
-  modules: {
   }
 })

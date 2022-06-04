@@ -7,38 +7,107 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: '/layout'
+  },
+  // 登录
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/index.vue')
   },
+  // 布局页面
   {
-    path: '/',
+    path: '/layout',
     name: 'layout',
-    redirect: 'index',
+    redirect: '/layout/index',
     component: () => import('@/views/layout/index.vue'),
     meta: { requiredAuth: true },
     children: [
-      { path: 'index', component: () => import('@/views/layout/index/index.vue') },
-      { path: 'profile', name: 'profile', component: () => import('@/views/layout/profile/index.vue'), meta: { requiredAuth: true } },
-      { path: 'qa', name: 'qa', component: () => import('@/views/layout/qa/index.vue') },
-      { path: 'video', name: 'video', component: () => import('@/views/layout/video/index.vue') }
+      {
+        path: 'index',
+        name: 'index',
+        component: () => import('@/views/index/index.vue')
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/profile/index.vue'),
+        meta: { requiredAuth: true }
+      },
+      {
+        path: 'movie',
+        name: 'movie',
+        component: () => import('@/views/movie/index.vue')
+      },
+      {
+        path: 'video',
+        name: 'video',
+        component: () => import('@/views/video/index.vue')
+      }
     ]
   },
+  // 搜索页面
   {
     path: '/search',
-    name: 'search',
-    component: () => import('@/views/layout/index/search/Search.vue')
+    name: 'searArticles',
+    component: () => import('@/components/search/SearchArticle.vue')
   },
+  // 文章详情
   {
     path: '/article/:article_id',
     name: 'article',
-    component: () => import('@/views/layout/index/articleList/articleDetail/index.vue'),
+    component: () => import('@/views/index/components/articleDetail/index.vue'),
     props: true
   },
+  // 编辑资料
   {
     path: '/editprofile',
     name: 'editprofile',
-    component: () => import('@/views/user/components/EditProfile.vue'),
+    component: () => import('@/views/profile/components/EditProfile.vue'),
+    meta: { requiredAuth: true }
+  },
+  // 小智同学
+  {
+    path: '/xiaozhi',
+    name: 'xiaozhi',
+    component: () => import('@/views/xiaozhi/XiaoZhi.vue'),
+    meta: { requiredAuth: true }
+
+  },
+  // 举报文章
+  {
+    path: '/article/report/:id',
+    name: 'reportarticle',
+    component: () => import('@/components/article/ArticleReport.vue'),
+    meta: { requiredAuth: true }
+  },
+  // 收藏列表
+  {
+    path: '/collection',
+    name: 'collection',
+    component: () => import('@/views/profile/components/Collection.vue'),
+    meta: { requiredAuth: true }
+  },
+  // 阅读历史
+  {
+    path: '/history',
+    name: history,
+    component: () => import('@/views/profile/components/History.vue'),
+    meta: { requiredAuth: true }
+  },
+  // 关注列表
+  {
+    path: '/user/following',
+    name: 'userfollowing',
+    component: () => import('@/views/profile/components/Following.vue'),
+    meta: { requiredAuth: true }
+  },
+  // 粉丝列表
+  {
+    path: '/user/followed',
+    name: 'userfollowed',
+    component: () => import('@/views/profile/components/Followed.vue'),
     meta: { requiredAuth: true }
   }
 ]
@@ -49,18 +118,19 @@ const router = new VueRouter({
 
 // 前置守卫
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiredAuth) {
-    if (store.state.token) {
-      return next()
+  if (!store.state.userInfo) {
+    if (to.meta.requiredAuth) {
+      Dialog.confirm({
+        title: '提示',
+        message: '该功能需要登录，确认登录吗?'
+      }).then(() => {
+        router.push('/login')
+      }).catch(() => {
+        from()
+      })
+    } else {
+      next()
     }
-    Dialog.confirm({
-      title: '提示',
-      message: '该功能需要登录，确认登录吗?'
-    }).then(() => {
-      router.push('/login')
-    }).catch(() => {
-      from()
-    })
   } else {
     next()
   }

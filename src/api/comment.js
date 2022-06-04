@@ -1,5 +1,6 @@
 import request from '@/utils/request.js'
 
+// 获取评论
 export const comments = params => {
   return request({
     method: 'GET',
@@ -8,6 +9,7 @@ export const comments = params => {
   })
 }
 
+// 对评论点赞
 export const addLike = target => {
   return request({
     method: 'POST',

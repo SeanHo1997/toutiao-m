@@ -8,8 +8,11 @@ import './styles/index.less'
 
 import Vant from 'vant'
 import 'vant/lib/index.css'
-Vue.use(Vant)
 
+import components from '@/components/index'
+
+Vue.use(Vant)
+Vue.use(components)
 Vue.config.productionTip = false
 
 new Vue({

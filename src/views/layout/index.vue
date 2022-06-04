@@ -1,22 +1,23 @@
 <template>
   <div class="layout-containner">
     <keep-alive>
+      <!-- 二级路由入口 -->
       <router-view></router-view>
     </keep-alive>
     <van-tabbar route class="tabber">
-      <van-tabbar-item icon="home-o" to="/index" class="tabber-item">
+      <van-tabbar-item icon="home-o" to="/layout/index" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-shouye"></i>
       首页
       </van-tabbar-item>
-      <van-tabbar-item icon="search" to="/qa" class="tabber-item">
-      <i slot="icon" class="toutiao toutiao-wenda"></i>
-      问答
-      </van-tabbar-item>
-      <van-tabbar-item icon="friends-o" to="/video" class="tabber-item">
+      <van-tabbar-item icon="friends-o" to="/layout/video" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-shipin"></i>
       视频
       </van-tabbar-item>
-      <van-tabbar-item icon="setting-o" to="/profile" class="tabber-item">
+      <van-tabbar-item icon="search" to="/layout/movie" class="tabber-item">
+      <i slot="icon" class="toutiao toutiao-wenda"></i>
+      放映厅
+      </van-tabbar-item>
+      <van-tabbar-item icon="setting-o" to="/layout/profile" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-wode"></i>
       我的
       </van-tabbar-item>
@@ -26,7 +27,11 @@
 
 <script>
 export default {
-  name: 'LayoutCom'
+  name: 'LayoutCom',
+  mounted () {
+    // 第一次渲染出组件后添加缓存
+    this.$store.commit('addcachePages', 'LayoutCom')
+  }
 }
 </script>
 
