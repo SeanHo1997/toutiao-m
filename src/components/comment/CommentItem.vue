@@ -12,9 +12,7 @@
         <div class="user-name">{{ commentInfo.aut_name }}</div>
         <van-button
           class="like-btn"
-          :class="{
-            like: commentInfo.is_liking
-          }"
+          :class="{ like: commentInfo.is_liking }"
           :icon="commentInfo.is_liking?'good-job':'good-job-o'"
           @click="like"
         >{{ commentInfo.like_count > 0 ? commentInfo.like_count : '赞' }}
@@ -28,7 +26,7 @@
           <van-button
             class="reply-btn"
             round
-            @click="sendComment"
+            @click="showSecCmt"
           >回复{{ commentInfo.reply_count }}</van-button>
         </div>
       </div>
@@ -51,11 +49,9 @@ export default {
       try {
         if (this.commentInfo.is_liking) {
           await deleteLike(this.commentInfo.com_id)
-          this.$toast('取消点赞')
           this.$emit('changeLikeCount', this.commentInfo.like_count - 1)
         } else {
           await addLike(this.commentInfo.com_id)
-          this.$toast('点赞成功')
           this.$emit('changeLikeCount', this.commentInfo.like_count + 1)
         }
         this.$emit('changeIsLiking')
@@ -63,11 +59,9 @@ export default {
         this.$toast('请重试')
       }
     },
-    sendComment () {
-      // 显示回复评论弹出层
-      this.$emit('showSecondaryComment')
-      // 发送评论信息
-      this.$emit('sendCommentInfo', this.commentInfo)
+    showSecCmt () {
+      // 显示回复评论弹出层、发送评论信息
+      this.$emit('showSecCmt', this.commentInfo)
     }
   }
 }

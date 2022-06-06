@@ -23,10 +23,8 @@ export default {
       try {
         if (this.isCollected) {
           await deleteCollect(this.articleID)
-          this.$toast('已取消收藏')
         } else {
           await addCollect(this.articleID)
-          this.$toast.success('收藏成功')
         }
         this.$emit('changeCollect')
       } catch (err) {

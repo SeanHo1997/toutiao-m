@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap">
     <HeaderVC
       title="收藏"
     />
@@ -10,6 +10,9 @@
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
+      :immediate-check="false"
     >
       <ArticleItem
       v-for="(item, index) in colleciton.results"
@@ -21,14 +24,19 @@
 </template>
 
 <script>
+import ArticleItem from '@/views/index/components/ArticleItem.vue'
 import { collection } from '@/api/article'
 
 export default {
   name: 'CollecitonCom',
+  components: {
+    ArticleItem
+  },
   data () {
     return {
       list: [],
       loading: false,
+      error: false,
       finished: false,
       query: {
         page: 1,
@@ -52,6 +60,8 @@ export default {
         if (results.length < this.query.per_page) {
           this.finished = true
         }
+      }).catch(() => {
+        this.error = true
       })
     },
     async getCollection () {
@@ -65,9 +75,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.vanlist {
-  position: absolute;
-  top: 92px;
-  bottom: -50px;
+.wrap {
+  position: relative;
+  padding-top: 92px;
+  padding-bottom: -50px;
 }
 </style>

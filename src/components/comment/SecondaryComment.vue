@@ -2,8 +2,7 @@
   <div class="containner">
     <div class="comment-containner">
       <!-- 导航栏 -->
-      <van-nav-bar
-      >
+      <van-nav-bar>
         <span class="reply-title" slot="title">{{`评论回复(${commentInfo.reply_count})`}}</span>
         <i class="leftarrow toutiao toutiao-youjiantou" slot="left" @click="$emit('closePopup')"></i>
       </van-nav-bar>
@@ -20,14 +19,15 @@
     <CommentList
     type="c"
     :source="commentInfo.com_id"
+    :secCmtlist="commentList"
     ></CommentList>
     <!-- /评论回复列表 -->
     <!-- 写评论按钮 -->
-    <van-button type="default" class="comment-btn" @click="secondaryCommentEdit=true" >写评论</van-button>
+    <van-button type="default" class="comment-btn" @click="secCmtEdit=true" >回复评论</van-button>
     <!-- /写评论按钮 -->
     <!-- 写评论回复弹出层 -->
     <van-popup
-    v-model="secondaryCommentEdit"
+    v-model="secCmtEdit"
     close-icon-position="top-right"
     position="bottom"
     >
@@ -35,8 +35,7 @@
     :target="commentInfo.com_id"
     :articleID="articleID"
     :com_id="commentInfo.com_id"
-    @closePopup="secondaryCommentEdit = false"
-    @newComment="updateReply"
+    @newComment="pubSecCmt"
     ></CommentPopup>
     </van-popup>
     <!-- /写评论回复弹出层 -->
@@ -47,7 +46,6 @@
 import CommentItem from '@/components/comment/CommentItem.vue'
 import CommentList from '@/components/comment/CommentList.vue'
 import CommentPopup from '@/components/comment/CommentPopup.vue'
-import bus from '@/utils/bus'
 
 export default {
   name: 'SecondaryComment',
@@ -68,7 +66,7 @@ export default {
       limit: 10,
       list: [],
       listLength: 0,
-      secondaryCommentEdit: false,
+      secCmtEdit: false,
       commentList: []
     }
   },
@@ -78,9 +76,10 @@ export default {
     CommentPopup
   },
   methods: {
-    updateReply (val) {
-      bus.$emit('update-reply-count', val)
-      this.commentList.unshift(val)
+    pubSecCmt (newSecCmt) {
+      this.commentList.unshift(newSecCmt.new_obj)
+      this.secCmtEdit = false
+      this.$emit('replyCountAdd1')
     }
   }
 }

@@ -27,7 +27,10 @@ const routes = [
       {
         path: 'index',
         name: 'index',
-        component: () => import('@/views/index/index.vue')
+        component: () => import('@/views/index/index.vue'),
+        meta: {
+          scrollTop: 0
+        }
       },
       {
         path: 'profile',
@@ -51,13 +54,20 @@ const routes = [
   {
     path: '/search',
     name: 'searArticles',
-    component: () => import('@/components/search/SearchArticle.vue')
+    component: () => import('@/components/search/SearchArticle.vue'),
+    children: [
+      {
+        path: 'results/:content',
+        name: 'results',
+        component: () => import('@/components/search/components/SearchArticlesRes.vue')
+      }
+    ]
   },
   // 文章详情
   {
     path: '/article/:article_id',
     name: 'article',
-    component: () => import('@/views/index/components/articleDetail/index.vue'),
+    component: () => import('@/views/index/components/articleDetail/articleDetail.vue'),
     props: true
   },
   // 编辑资料
@@ -69,11 +79,10 @@ const routes = [
   },
   // 小智同学
   {
-    path: '/xiaozhi',
-    name: 'xiaozhi',
-    component: () => import('@/views/xiaozhi/XiaoZhi.vue'),
+    path: '/serviceFeiFei',
+    name: 'serviceFeiFei',
+    component: () => import('@/views/service/Service.vue'),
     meta: { requiredAuth: true }
-
   },
   // 举报文章
   {
@@ -116,7 +125,7 @@ const router = new VueRouter({
   routes
 })
 
-// 前置守卫
+// 全局前置守卫
 router.beforeEach((to, from, next) => {
   if (!store.state.userInfo) {
     if (to.meta.requiredAuth) {

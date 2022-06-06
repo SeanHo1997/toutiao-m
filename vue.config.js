@@ -12,6 +12,6 @@ module.exports = defineConfig({
         changeOrigin: true // 是否跨域，需要设置为true,才能代理发出请求
       }
     }
-    // before: require('./mock/mock-server.js')
-  }
+  },
+  publicPath: './'
 })

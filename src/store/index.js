@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { getItem, setItem } from '@/utils/localStorage'
 
 Vue.use(Vuex)
 
@@ -7,14 +8,15 @@ const Token = 'USER-TOKEN'
 
 export default new Vuex.Store({
   state: {
-    userInfo: JSON.parse(window.localStorage.getItem(Token)) || null,
-    cachePages: []
+    userInfo: getItem(Token) || null,
+    cachePages: [],
+    userData: {}
   },
   mutations: {
     setToken (state, val) {
       state.userInfo = val
       // 此时还需要把token存储到本地中
-      window.localStorage.setItem(Token, JSON.stringify(state.userInfo))
+      setItem(Token, state.userInfo)
     },
     delToken (state) {
       state.userInfo = null

@@ -8,7 +8,7 @@
         </van-button>
       </van-nav-bar>
       <!-- 标签页 -->
-      <van-tabs class="tabs" ref="tabs">
+      <van-tabs class="tabs" v-model="tabId" @click="changeTab">
         <!-- 汉堡按钮 -->
         <!-- <div class="placeholder" slot="nav-right" ></div> -->
         <div class="placeholder" slot="nav-right"></div>
@@ -58,10 +58,12 @@ export default {
   },
   data () {
     return {
+      tabId: 0,
       userChannels: [],
       isShowSearch: false,
       showPopup: false,
-      slicedArr: []
+      slicedArr: [],
+      tabsScrollTop: {}
     }
   },
   async created () {
@@ -113,7 +115,24 @@ export default {
         }
       }
       setItem('user-channels', this.userChannels)
+    },
+    // 当发生tab切换时，将记录的数据赋值给当前的scrollTop
+    changeTab () {
+      document.documentElement.scrollTop = this.tabsScrollTop[this.tabId]
     }
+  },
+  deactivated () {
+    // deacctivated后保存不到
+    // this.$route.meta.scrollTop = document.documentElement.screenTop
+    window.removeEventListener('scroll', () => {})
+  },
+  activated () {
+    window.addEventListener('scroll', () => {
+      this.$route.meta.scrollTop = document.documentElement.scrollTop
+      // 记录每一个tab item的滚动高度到数据中
+      this.tabsScrollTop[this.tabId] = document.documentElement.scrollTop
+    })
+    document.documentElement.scrollTop = this.$route.meta.scrollTop
   }
 }
 </script>

@@ -26,27 +26,20 @@ export default {
   name: 'CommentPopup',
   data () {
     return {
-      commentContent: '',
-      commentData: {}
+      commentContent: ''
     }
   },
   methods: {
-    // 对文章评论
     async addComment () {
-      try {
-        const { data: { data } } = await pubComments({
-          target: this.target,
-          content: this.commentContent,
-          art_id: this.articleID ? this.articleID : null
-        })
-        this.commentData = data
+      await pubComments({
+        target: this.target,
+        content: this.commentContent,
+        art_id: this.articleID ? this.articleID : null
+      }).then((res) => {
+        const data = res.data.data
+        this.$emit('newComment', data)
         this.commentContent = ''
-        this.$toast('评论成功')
-        this.$emit('newComment', this.commentData.new_obj)
-      } catch (err) {
-        this.$toast('评论失败')
-        console.log(err)
-      }
+      })
     }
   },
   props: {
@@ -54,7 +47,8 @@ export default {
       type: String
     },
     articleID: {
-      type: String
+      type: String,
+      default: null
     }
   }
 }

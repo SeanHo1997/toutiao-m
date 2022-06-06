@@ -24,11 +24,9 @@ export default {
         if (this.islike === 1) {
           await unlikeArticle(this.articleID)
           this.$emit('changeLike')
-          this.$toast('已取消点赞')
         } else if (this.islike === -1) {
           await likeArticle(this.articleID)
           this.$emit('changeUnlike')
-          this.$toast('赞!')
         }
       } catch {
         this.$toast.fail('点赞失败')

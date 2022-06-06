@@ -11,12 +11,7 @@
           @focus="isResultsShow=false"
         />
       </form>
-      <!-- 搜索结果 -->
-      <SearchRes
-      v-if="isResultsShow"
-      :searchText="value"
-      ></SearchRes>
-      <!-- 联想建议 -->
+      <router-view v-if="isResultsShow"></router-view>
       <LinkedSuggestions
        v-else-if="value"
        :searchText="value"
@@ -38,8 +33,7 @@
 <script>
 import LinkedSuggestions from './components/LinkedSuggestions.vue'
 import SearchHistory from './components/SearchHistory.vue'
-import SearchRes from './components/SearchArticlesRes.vue'
-import { getItem } from '@/utils/localStorage'
+import { getItem, setItem } from '@/utils/localStorage'
 
 export default {
   name: 'SearchCom',
@@ -52,11 +46,11 @@ export default {
   },
   components: {
     LinkedSuggestions,
-    SearchHistory,
-    SearchRes
+    SearchHistory
   },
   methods: {
     onSearch (val) {
+      this.$router.push(`/search/results/${val}`)
       this.isResultsShow = true
       this.value = val
       // 存储历史记录
@@ -67,7 +61,7 @@ export default {
       this.searchHistory.unshift(val)
     },
     onCancel () {
-      this.$router.back()
+      this.$router.push('/')
     },
     deleteHistory (index) {
       this.searchHistory.splice(index, 1)
@@ -78,7 +72,7 @@ export default {
   },
   watch: {
     searchHistory (newVal) {
-      window.localStorage.setItem('USER-SEARCH-HISTORIES-ARTICLE', JSON.stringify(newVal))
+      setItem('USER-SEARCH-HISTORIES-ARTICLE', newVal)
     }
   }
 }

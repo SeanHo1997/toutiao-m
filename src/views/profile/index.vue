@@ -46,10 +46,10 @@
         <i slot="icon" class="toutiao toutiao-lishi"></i>
       </van-grid-item>
     </van-grid>
-    <!-- 通知、小智同学 -->
+    <!-- 通知、智能客服 -->
       <div class="cell-list">
         <van-cell title="通知消息" size="middle" @click="$toast.fail('接口文档不完整')" />
-        <van-cell title="客服" size="middle" @click="xiaoZhi"/>
+        <van-cell title="智能客服" size="middle" @click="service"/>
       </div>
     <van-button class="logout" @click="confirmLogout" >退出登录</van-button>
     <!-- 点赞 -->
@@ -67,25 +67,31 @@
 
 <script>
 import { getUserData } from '@/api/user.js'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ProfileCom',
   data () {
     return {
-      userData: '',
       showOverlay: false,
       showPreview: false
     }
   },
+  computed: {
+    ...mapState(['userData'])
+  },
   async created () {
-    try {
-      const { data: { data } } = await getUserData()
-      this.userData = data
-    } catch (err) {
-      return this.$toast.fail('加载信息失败')
-    }
+    this.getUserProfile()
+  },
+  activated () {
+    this.getUserProfile()
   },
   methods: {
+    async getUserProfile () {
+      await getUserData().then(res => {
+        this.$store.state.userData = res.data.data
+      })
+    },
     confirmLogout () {
       this.$dialog.confirm({
         title: '退出登录'
@@ -94,14 +100,10 @@ export default {
         this.$store.commit('delToken')
         this.$router.push('/login')
         this.$store.clearCachePages()
-      }).catch(() => {
-        // this.$router.back()
       })
     },
-    xiaoZhi () {
-      // 因跨域问题未完成此功能
-      // this.$router.push('/xiaozhi')
-      this.$toast('因跨域问题未完成此功能')
+    service () {
+      this.$router.push('/serviceFeiFei')
     },
     getLikes () {
       this.showOverlay = true
@@ -149,6 +151,7 @@ export default {
         background-color: #ffffff;
         color: #666666;
         font-size: 20px;
+        white-space: nowrap;
         }
       }
     }

@@ -9,7 +9,7 @@ const request = axios.create({
 })
 
 // 单独定义一个axios实例用来获取新的token，避免拦截器作用
-const reefreshTokenReq = axios.create({
+const refreshTokenReq = axios.create({
   baseURL: 'http://toutiao.itheima.net'
 })
 
@@ -25,15 +25,17 @@ request.interceptors.request.use(function (config) {
 })
 
 // 响应拦截器(解决Token过期问题)
-axios.interceptors.response.use(function (response) {
+request.interceptors.response.use(response => {
   // 响应成功则通过
   return response
-}, async function (error) {
+}, async error => {
   const status = error.response.status
   if (status === 400) {
     Toast.fail('请求参数异常')
   } else if (status === 507) {
     Toast.fail('服务器数据库异常')
+  } else if (status === 500) {
+    Toast.fail('Internal Server Error')
   } else if (status === 401) {
     Toast.fail('用户认证失败')
     // 401状态码代表认证失败
@@ -43,16 +45,16 @@ axios.interceptors.response.use(function (response) {
     // 有则用refresh_token请求新的token
     } else {
       try {
-        const { data } = await reefreshTokenReq({
+        const { data } = await refreshTokenReq({
           method: 'PUT',
-          url: '/app/v1_0/authorizations',
+          url: '/v1_0/authorizations',
           headers: {
             Authorization: `Bearer ${store.state.userInfo.refresh_token}`
           }
         })
         store.state.userInfo.token = data.data.token
-        store.commit('setToken', store.state.userInfo.token)
-        //  ?????
+        store.commit('setToken', data.data.token)
+        //  再次发起因为401未完成的请求
         return request(error.config)
       } catch (err) {
         router.replace('/login')

@@ -5,16 +5,17 @@
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
+      :immediate-check="false"
+      :error.sync="error"
     >
       <CommentItem
       v-for="(item, index) in list"
       :key="index"
       :title="item.content"
-      :commentInfo="list[index]"
-      @changeIsLiking="list[index].is_liking = !list[index].is_liking"
-      @changeLikeCount="list[index].like_count = $event"
-      @showSecondaryComment="$emit('showSecondaryComment')"
-      @sendCommentInfo="$emit('sendCommentInfo', $event)"
+      :commentInfo="item"
+      @changeIsLiking="item.is_liking=!item.is_liking"
+      @changeLikeCount="item.like_count=$event"
+      @showSecCmt="$emit('showSecCmt', $event)"
       />
     </van-list>
   </div>
@@ -23,17 +24,21 @@
 <script>
 import { comments } from '@/api/comment.js'
 import CommentItem from '@/components/comment/CommentItem.vue'
-import bus from '@/utils/bus'
 
 export default {
   name: 'CommentList',
+  components: {
+    CommentItem
+  },
   data () {
     return {
       loading: false,
       finished: false,
       offset: null,
       limit: 10,
-      list: []
+      list: this.secCmtlist || [],
+      totalCount: 0,
+      error: false
     }
   },
   props: {
@@ -41,51 +46,67 @@ export default {
       type: [String, Number, Object],
       required: true
     },
-    newObj: {
+    newCmt: {
       type: Object
     },
     type: {
       type: String,
-      required: true
+      require: true
+    },
+    secCmtlist: {
+      type: Array,
+      defualt: () => []
     }
   },
-  watch: {
-    newObj () {
-      this.onLoad()
-    }
+  created () {
+    this.loadComments()
   },
   methods: {
-    async onLoad () {
-      try {
-        const { data } = await comments({
-          type: this.type,
-          source: this.source,
-          offset: this.offset,
-          limit: this.limit
-        })
-        this.list.push(...data.data.results)
+    async loadComments () {
+      // 此方法只获取评论总数更新到评论图标上
+      await comments({
+        type: this.type,
+        source: this.source,
+        offset: this.offset,
+        limit: this.limit
+      }).then(res => {
+        const data = res.data.data
+        this.totalCount = data.total_count
+        this.$emit('sendCommnetCount', this.totalCount)
+        this.list.push(...data.results)
         // 加载状态结束
         this.loading = false
         // 判断是否还有数据
-        if (data.data.results.length) {
-          this.offset = data.data.last_id
+        if (data.results.length) {
+          this.offset = data.last_id
         } else {
           this.finished = true
         }
-      } catch (err) {
-        this.$toast('获取评论失败')
-      }
-      this.$emit('sendCommnetCount', this.list.length)
+      }).catch(() => {
+        this.error = true
+      })
+    },
+    async onLoad () {
+      await comments({
+        type: this.type,
+        source: this.source,
+        offset: this.offset,
+        limit: this.limit
+      }).then(res => {
+        const data = res.data.data
+        this.list.push(...data.results)
+        // 加载状态结束
+        this.loading = false
+        // 判断是否还有数据
+        if (data.results.length) {
+          this.offset = data.last_id
+        } else {
+          this.finished = true
+        }
+      }).catch(() => {
+        this.error = true
+      })
     }
-  },
-  components: {
-    CommentItem
-  },
-  updated () {
-    bus.$on('update-reply-count', val => {
-      this.list.unshift(val)
-      this.onLoad()
-    })
   }
 }
 </script>

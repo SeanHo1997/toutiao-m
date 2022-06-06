@@ -4,7 +4,7 @@
     <van-nav-bar
       class="page-nav-bar"
       title="个人信息"
-      @click-left="$router.back()"
+      @click-left="routeBack"
     >
       <van-icon slot="left" name="arrow-left" class="arrowicon"/>
     </van-nav-bar>
@@ -58,7 +58,12 @@
       position="bottom"
       :style="{ height: '100%' }"
       >
-      <UserAvator @closePopup="showAvator = false" :img="img" @sendBlob="userProfile.photo=$event"/>
+      <UserAvator
+        @closePopup="showAvator=false"
+        :img="img"
+        @sendBlob="userProfile.photo=$event"
+        @updateProfle="$emit('updateProfle')"
+        />
     </van-popup>
     <!-- /头像弹出层 -->
   </div>
@@ -70,6 +75,8 @@ import UserName from '@/views/profile/components/UserName.vue'
 import UserGender from '@/views/profile/components/UserGender.vue'
 import UserBirthday from '@/views/profile/components/UserBirthday.vue'
 import UserAvator from '@/views/profile/components/UserAvator.vue'
+import bus from '@/utils/bus'
+
 export default {
   name: 'UserProfile',
   components: {
@@ -95,7 +102,6 @@ export default {
     const { data: { data } } = await getUserProfile()
     this.userProfile = data
   },
-  mounted () {},
   methods: {
     changeAvator () {
       // 获取照片文件对象
@@ -106,6 +112,10 @@ export default {
       this.showAvator = true
       // 当两次选择的图片文件一样时，不会触发input的change事件
       this.$refs.photo.value = ''
+    },
+    routeBack () {
+      this.$router.back()
+      bus.$emit('updateProfile')
     }
   }
 }

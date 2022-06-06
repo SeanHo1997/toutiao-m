@@ -1,8 +1,9 @@
 <template>
   <div class="article-item-containner">
+    <!-- 点击单元格 路由跳转至文章详情页 -->
     <van-cell
     class="vancell"
-    :to="`/article/${article.art_id}`"
+    @click="$router.push(`/article/${article.art_id}`)"
     >
     <div slot="title" class="title van-multi-ellipsis--l2">{{ article.title }}</div>
     <div slot="label" class="label" >
@@ -41,7 +42,7 @@ export default {
   props: {
     article: {
       type: Object,
-      required: true
+      require: true
     }
   }
 }

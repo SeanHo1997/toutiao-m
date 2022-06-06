@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive :include="cachePages">
+    <keep-alive :include="cachePages" exclude="profile">
       <router-view></router-view>
     </keep-alive>
   </div>

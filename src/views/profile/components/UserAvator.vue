@@ -12,6 +12,7 @@
 import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
 import { updatePhoto } from '@/api/user.js'
+
 export default {
   name: 'UserAvator',
   props: {
@@ -49,10 +50,11 @@ export default {
         const formdata = new FormData()
         formdata.append('photo', blob)
         const { data } = await updatePhoto(formdata)
-        console.log(data)
+        // console.log(data)
         this.blob = data.data.photo
         this.$emit('sendBlob', this.blob)
         this.$emit('closePopup')
+        this.$emit('updateProfle')
       })
     }
   }

@@ -27,7 +27,7 @@
 
 <script>
 import { getArticle } from '@/api/article'
-import ArticleItem from '@/components/article/ArticleItem.vue'
+import ArticleItem from '@/views/index/components/ArticleItem.vue'
 
 export default {
   name: 'ArticleList',
@@ -102,5 +102,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 </style>

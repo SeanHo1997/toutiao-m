@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap">
     <HeaderVC
       title="浏览历史"
     />
@@ -22,9 +22,13 @@
 
 <script>
 import { articleHistory } from '@/api/article'
+import ArticleItem from '@/views/index/components/ArticleItem.vue'
 
 export default {
   name: 'HistoryCom',
+  components: {
+    ArticleItem
+  },
   data () {
     return {
       list: [],
@@ -65,9 +69,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.vanlist {
-  position: absolute;
-  top: 92px;
-  bottom: -50px;
+.wrap {
+  position: relative;
+  padding-top: 92px;
+  padding-bottom: -50px;
 }
 </style>

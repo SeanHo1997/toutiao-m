@@ -10,13 +10,10 @@
         >加载中</van-loading>
       </div>
       <!-- /加载中 -->
-
       <!-- 加载完成-文章详情 -->
       <div class="article-detail" v-else>
         <!-- 文章标题 -->
         <h1 class="article-title">{{ articleData.title }}</h1>
-        <!-- /文章标题 -->
-
         <!-- 用户信息 -->
         <van-cell class="user-info" center :border="false">
           <van-image
@@ -37,27 +34,23 @@
           </Follow>
         </van-cell>
         <!-- /用户信息 -->
-
         <!-- 文章内容 -->
         <div
         class="article-content markdown-body"
         v-html="articleData.content"
         ></div>
-        <van-divider>正文结束</van-divider>
+        <van-divider ref="divider">正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
-
       <!-- 评论列表 -->
       <CommentList
+      ref="commentList"
       :source="article_id"
       @sendCommnetCount="getCommentCount"
-      :newObj="newObj"
-      @showSecondaryComment="showSecondaryComment=true"
-      @sendCommentInfo="commentInfo=$event"
-      type="a"
+      @showSecCmt="showSecCmt"
+      type='a'
       />
       <!-- /评论列表 -->
-
       <!-- 加载失败：404 -->
       <div class="error-wrap" v-if="httpCode===404">
         <van-icon name="failure" />
@@ -66,6 +59,7 @@
       <!-- /加载失败：404 -->
       <!-- 底部区域 -->
       <div class="article-bottom">
+        <!-- 写评论按钮 -->
         <van-button
           class="comment-btn"
           type="default"
@@ -73,22 +67,25 @@
           size="small"
           @click="show=true"
         >写评论</van-button>
+        <!-- 评论图标 -->
         <van-icon
           name="comment-o"
-          :badge="this.commentCount"
+          :badge="commentCount"
           color="#777"
           @click="jumpToComment"
         />
+        <!-- 收藏 -->
         <Collect
         :isCollected="articleData.is_collected"
         :articleID="this.articleData.art_id"
         @changeCollect="articleData.is_collected=!articleData.is_collected"
         ></Collect>
+        <!-- 点赞 -->
         <Like
         :islike="articleData.attitude"
         :articleID="articleData.art_id"
-        @changeLike="articleData.attitude = -1"
-        @changeUnlike="articleData.attitude = 1"
+        @changeLike="articleData.attitude=-1"
+        @changeUnlike="articleData.attitude=1"
         ></Like>
         <!-- 更多按钮 -->
         <van-icon name="share" color="#777777" @click="showShare=true"></van-icon>
@@ -101,7 +98,6 @@
         />
       </div>
       <!-- /底部区域 -->
-
       <!-- 评论编辑弹出层 -->
       <van-popup
         v-model="show"
@@ -126,11 +122,11 @@
         @closePopup="showSecondaryComment=false"
         v-if="showSecondaryComment"
         :articleID="articleData.art_id"
-        @update-reply-count="commentInfo.reply_count ++"
+        @replyCountAdd1="commentInfo.reply_count++"
         ></SecondaryComment>
           <!-- 由于弹出层默认为懒渲染，所以在关闭弹出层后，
           里面的组件不会被销毁，一直会存在，当下次点击其他评论时，底下的回复数据不会更变，
-          所以需要加一个v-if让它动态创建销毁。以达到实时渲染更新最新数据 -->
+          所以需要加一个v-if让它动态创建销毁达到实时渲染更新最新数据 -->
       </van-popup>
       <!-- /二级评论弹出层 -->
 
@@ -152,7 +148,6 @@ import Collect from '@/components/comment/Collect.vue'
 import Like from '@/components/comment/Like.vue'
 import CommentList from '@/components/comment/CommentList.vue'
 import CommentPopup from '@/components/comment/CommentPopup.vue'
-
 import SecondaryComment from '@/components/comment/SecondaryComment.vue'
 
 export default {
@@ -178,7 +173,7 @@ export default {
       httpCode: 0,
       commentCount: 0,
       show: false,
-      newObj: {},
+      newCmt: {},
       showSecondaryComment: false,
       commentInfo: {},
       showShare: false,
@@ -200,10 +195,8 @@ export default {
         const { data } = await getArticleDetail(articleID)
         this.loaded = true
         this.articleData = data.data
-        // console.log(data)
         this.httpCode = 0
       } catch (err) {
-        console.log('错误', err)
         if (err.response && err.response.status === 404) {
           this.httpCode = 404
         } else {
@@ -211,11 +204,13 @@ export default {
         }
       }
     },
-    getCommentCount (val) {
-      this.commentCount = val
+    getCommentCount (totalCount) {
+      this.commentCount = totalCount
     },
     jumpToComment () {
-      this.$refs.mainwrap.scrollTop = this.$refs.mainwrap.scrollHeight
+      // console.log(this.$refs.commentList.$el.clientHeight)
+      // 点击评论图标快速下滑到评论区域
+      this.$refs.mainwrap.scrollTop = this.$refs.mainwrap.scrollHeight - this.$refs.commentList.$el.clientHeight + 236
     },
     async onSelect (option) {
       if (option.name === '举报文章') {
@@ -224,13 +219,17 @@ export default {
         this.$toast('无此功能接口,敬请期待...')
       }
     },
-    newComment (val) {
-      this.newObj = val
+    newComment (newCmt) {
       this.commentCount += 1
+      this.$refs.commentList.list.unshift(newCmt.new_obj)
       this.show = false
     },
     toUserProfile () {
       this.$toast('无此接口,敬请期待')
+    },
+    showSecCmt ($event) {
+      this.showSecondaryComment = true
+      this.commentInfo = $event
     }
   }
 }
@@ -238,6 +237,7 @@ export default {
 
 <style lang="less" scoped>
 @import './github-markdown.css';
+
 .article-container {
   .page-nav-bar {
     .van-nav-bar__content {
@@ -264,7 +264,6 @@ export default {
       margin: 0;
       color: #3a3a3a;
     }
-
     .user-info {
       padding: 0 32px;
       .avatar {
@@ -288,7 +287,6 @@ export default {
         height: 58px;
       }
     }
-
     .article-content {
       padding: 55px 32px;
       /deep/ p {
@@ -296,7 +294,6 @@ export default {
       }
     }
   }
-
   .loading-wrap {
     padding: 200px 32px;
     display: flex;
@@ -304,7 +301,6 @@ export default {
     justify-content: center;
     background-color: #fff;
   }
-
   .error-wrap {
     padding: 200px 32px;
     display: flex;
@@ -330,7 +326,6 @@ export default {
       color: #666666;
     }
   }
-
   .article-bottom {
     position: fixed;
     left: 0;

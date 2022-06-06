@@ -2,7 +2,7 @@
   <div class="layout-containner">
     <keep-alive>
       <!-- 二级路由入口 -->
-      <router-view></router-view>
+      <router-view exclude="profile"></router-view>
     </keep-alive>
     <van-tabbar route class="tabber">
       <van-tabbar-item icon="home-o" to="/layout/index" class="tabber-item">

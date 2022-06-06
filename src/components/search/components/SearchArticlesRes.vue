@@ -8,24 +8,24 @@
       error-text="请求失败，点击重新加载"
       @load="onLoad"
     >
-      <van-cell
+      <ArticleItem
       v-for="(item, index) in resultList"
-      :key="index.id"
+      :key="index"
       :title="item.title"
-      @click="$router.push(`/article/${item.art_id}`)" />
+      :article="resultList[index]"
+      ></ArticleItem>
     </van-list>
   </div>
 </template>
 
 <script>
 import { getSearchResults } from '@/api/article'
+import ArticleItem from '@/views/index/components/ArticleItem.vue'
+
 export default {
   name: 'SearchArticlesRes',
-  props: {
-    searchText: {
-      type: String,
-      required: true
-    }
+  components: {
+    ArticleItem
   },
   data () {
     return {
@@ -33,7 +33,8 @@ export default {
       finished: false,
       resultList: [],
       page: 1,
-      error: false
+      error: false,
+      searchText: this.$route.params.content
     }
   },
   methods: {
@@ -63,5 +64,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 </style>
