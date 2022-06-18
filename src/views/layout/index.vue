@@ -9,14 +9,14 @@
       <i slot="icon" class="toutiao toutiao-shouye"></i>
       首页
       </van-tabbar-item>
-      <van-tabbar-item icon="friends-o" to="/layout/video" class="tabber-item">
+      <!-- <van-tabbar-item icon="friends-o" to="/layout/video" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-shipin"></i>
       视频
-      </van-tabbar-item>
-      <van-tabbar-item icon="search" to="/layout/movie" class="tabber-item">
+      </van-tabbar-item> -->
+      <!-- <van-tabbar-item icon="search" to="/layout/movie" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-wenda"></i>
       放映厅
-      </van-tabbar-item>
+      </van-tabbar-item> -->
       <van-tabbar-item icon="setting-o" to="/layout/profile" class="tabber-item">
       <i slot="icon" class="toutiao toutiao-wode"></i>
       我的
