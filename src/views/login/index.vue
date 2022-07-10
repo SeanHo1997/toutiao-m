@@ -4,7 +4,14 @@
       <!-- 导航栏 -->
       <van-nav-bar
       title="登录"
-      />
+      >
+        <i
+        slot="left"
+        class="toutiao toutiao-zuojiantou"
+        style="color: #fff; font-size: 18px;"
+        @click="$router.back()"
+        ></i>
+      </van-nav-bar>
       <!-- 导航栏 -->
       <!-- 输入框 -->
       <van-cell-group class="vancellgroup">

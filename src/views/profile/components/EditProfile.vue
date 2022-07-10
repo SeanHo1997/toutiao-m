@@ -22,7 +22,7 @@
       />
     </van-cell>
     <van-cell title="昵称" :value="userProfile.name" @click="showName = true"/>
-    <van-cell title="性别" :value="userProfile.gender ?  '女' : '男'" is-link :gender="userProfile.gender" @click="showGender = true"/>
+    <van-cell title="性别" :value="userProfile.gender === 1 ?  '女' : '男'" is-link :gender="userProfile.gender" @click="showGender = true"/>
     <van-cell title="生日" :value="userProfile.birthday" is-link :birthday="userProfile.birthday" @click="showBirthday = true" />
     <!-- /个人信息 -->
     <!-- 昵称弹出层 -->

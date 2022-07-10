@@ -37,16 +37,6 @@ const routes = [
         name: 'profile',
         component: () => import('@/views/profile/index.vue'),
         meta: { requiredAuth: true }
-      },
-      {
-        path: 'movie',
-        name: 'movie',
-        component: () => import('@/views/movie/index.vue')
-      },
-      {
-        path: 'video',
-        name: 'video',
-        component: () => import('@/views/video/index.vue')
       }
     ]
   },

@@ -9,6 +9,7 @@
       <i
       slot="left"
       class="toutiao toutiao-zuojiantou"
+      style="color: #fff; font-size: 18px;"
       @click="$router.back()"
       ></i>
     </van-nav-bar>

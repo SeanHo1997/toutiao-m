@@ -5,11 +5,13 @@
     :columns="columns"
     @confirm="onConfirm"
     @cancel="onCancel"
+    :default-index="$attrs.value"
   />
 </template>
 
 <script>
 import { changeUserProfile } from '@/api/user.js'
+
 export default {
   name: 'UserGender',
   data () {
@@ -48,7 +50,3 @@ export default {
 
 }
 </script>
-
-<style lang="less" scoped>
-
-</style>
