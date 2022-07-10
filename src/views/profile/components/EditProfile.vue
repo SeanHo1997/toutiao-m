@@ -6,7 +6,12 @@
       title="个人信息"
       @click-left="routeBack"
     >
-      <van-icon slot="left" name="arrow-left" class="arrowicon"/>
+      <i
+      slot="left"
+      class="toutiao toutiao-zuojiantou"
+      style="color: #fff; font-size: 18px"
+      @click="$router.back()"
+      ></i>
     </van-nav-bar>
     <!-- /导航栏 -->
 
@@ -123,11 +128,6 @@ export default {
 
 <style scoped lang="less">
 .user-profile {
-  .page-nav-bar {
-    .arrowicon {
-      color: #fff;
-    }
-  }
   .avatar-cell {
     .van-cell__value {
       display: flex;

@@ -39,12 +39,9 @@ export default {
         per_page: 10
       },
       history: {
-        results: 0
+        results: []
       }
     }
-  },
-  created () {
-    this.articleHistory()
   },
   methods: {
     async onLoad () {
@@ -56,12 +53,6 @@ export default {
         if (results.length < this.query.per_page) {
           this.finished = true
         }
-      })
-    },
-    async articleHistory () {
-      await articleHistory(this.query).then(res => {
-        this.history = res.data.data
-        this.page += 1
       })
     }
   }

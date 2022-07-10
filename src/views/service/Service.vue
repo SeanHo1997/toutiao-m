@@ -1,13 +1,9 @@
 <template>
   <div class="container">
     <!-- 头部 -->
-    <van-nav-bar class="navBar" title="智能客服" fixed>
-      <i
-      slot="left"
-      class="toutiao toutiao-zuojiantou"
-      @click="$router.back()"
-      ></i>
-    </van-nav-bar>
+    <HeaderVC
+      title="智能客服"
+    />
     <!-- /头部 -->
     <!-- 中间 -->
     <div class="content" ref="content">
