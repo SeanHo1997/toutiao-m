@@ -1,25 +1,17 @@
 <template>
   <div class="layout-containner">
-    <keep-alive>
+    <keep-alive include="">
       <!-- 二级路由入口 -->
       <router-view exclude="profile"></router-view>
     </keep-alive>
     <van-tabbar route class="tabber">
       <van-tabbar-item icon="home-o" to="/layout/index" class="tabber-item">
-      <i slot="icon" class="toutiao toutiao-shouye"></i>
-      首页
+        <i slot="icon" class="toutiao toutiao-shouye"></i>
+        首页
       </van-tabbar-item>
-      <!-- <van-tabbar-item icon="friends-o" to="/layout/video" class="tabber-item">
-      <i slot="icon" class="toutiao toutiao-shipin"></i>
-      视频
-      </van-tabbar-item> -->
-      <!-- <van-tabbar-item icon="search" to="/layout/movie" class="tabber-item">
-      <i slot="icon" class="toutiao toutiao-wenda"></i>
-      放映厅
-      </van-tabbar-item> -->
       <van-tabbar-item icon="setting-o" to="/layout/profile" class="tabber-item">
-      <i slot="icon" class="toutiao toutiao-wode"></i>
-      我的
+        <i slot="icon" class="toutiao toutiao-wode"></i>
+        我的
       </van-tabbar-item>
     </van-tabbar>
   </div>

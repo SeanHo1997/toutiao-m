@@ -17,7 +17,6 @@
         />
       </div>
       <div class="wrapper">
-        <!-- <span id="is-top" v-if="isTopShow">置顶</span> -->
         <span id="username">{{ article.aut_name }}</span>
         <span id="comment">{{ article.comm_count }}</span>
         <span id="pubTime">{{ article.pubdate | relativeTime }}</span>

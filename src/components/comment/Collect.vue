@@ -36,9 +36,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .van-button {
-//   border: unset;
-// }
 .collected {
   color: #3296fa;
 }

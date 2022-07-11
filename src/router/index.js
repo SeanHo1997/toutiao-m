@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { Dialog } from 'vant'
-import store from '@/store'
+// import { Dialog } from 'vant'
+// import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -116,23 +116,23 @@ const router = new VueRouter({
 })
 
 // 全局前置守卫
-router.beforeEach((to, from, next) => {
-  if (!store.state.userInfo) {
-    if (to.meta.requiredAuth) {
-      Dialog.confirm({
-        title: '提示',
-        message: '该功能需要登录，确认登录吗?'
-      }).then(() => {
-        router.push('/login')
-      }).catch(() => {
-        from()
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (!store.state.userInfo) {
+//     if (to.meta.requiredAuth) {
+//       Dialog.confirm({
+//         title: '提示',
+//         message: '该功能需要登录，确认登录吗?'
+//       }).then(() => {
+//         router.push('/login')
+//       }).catch(() => {
+//         from()
+//       })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

@@ -11,7 +11,7 @@
       </div>
       <!-- /加载中 -->
       <!-- 加载完成-文章详情 -->
-      <div class="article-detail" v-else>
+      <div class="article-detail" ref="articleDetail" v-else>
         <!-- 文章标题 -->
         <h1 class="article-title">{{ articleData.title }}</h1>
         <!-- 用户信息 -->
@@ -178,9 +178,6 @@ export default {
       commentInfo: {},
       showShare: false,
       options: [
-        { name: '微信', icon: 'wechat' },
-        { name: '微博', icon: 'weibo' },
-        { name: '复制链接', icon: 'link' },
         { name: '举报文章', icon: 'poster' }
       ]
     }
@@ -208,9 +205,9 @@ export default {
       this.commentCount = totalCount
     },
     jumpToComment () {
-      // console.log(this.$refs.commentList.$el.clientHeight)
       // 点击评论图标快速下滑到评论区域
-      this.$refs.mainwrap.scrollTop = this.$refs.mainwrap.scrollHeight - this.$refs.commentList.$el.clientHeight + 236
+      // document.documentElement.scrollTop = this.$refs.mainwrap.scrollHeight - this.$refs.commentList.$el.clientHeight + 236
+      this.$refs.mainwrap.scrollTop = this.$refs.articleDetail.scrollHeight
     },
     async onSelect (option) {
       if (option.name === '举报文章') {

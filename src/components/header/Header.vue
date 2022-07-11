@@ -31,6 +31,7 @@ export default {
 
 <style lang="less" scoped>
 @import '@/styles/icon.less';
+
 .header {
   position: fixed;
   top: 0;

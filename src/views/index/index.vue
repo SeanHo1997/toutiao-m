@@ -10,7 +10,6 @@
       <!-- 标签页 -->
       <van-tabs class="tabs" v-model="tabId" @click="changeTab">
         <!-- 汉堡按钮 -->
-        <!-- <div class="placeholder" slot="nav-right" ></div> -->
         <div class="placeholder" slot="nav-right"></div>
         <div class="hamburger" slot="nav-right" @click="showPopup=true">
           <i class="toutiao toutiao-gengduo"></i>
@@ -91,7 +90,7 @@ export default {
     },
     enterChannel (index) {
       this.showPopup = false
-      this.$refs.tabs.currentIndex = index
+      this.tabId = index
     },
     delChannel (index) {
       this.slicedArr.push(this.userChannels[index])
@@ -116,23 +115,23 @@ export default {
       }
       setItem('user-channels', this.userChannels)
     },
+    scrollFn () {
+      this.$route.meta.scrollTop = document.documentElement.scrollTop
+      // 记录每一个tab item的滚动高度到数据中
+      this.tabsScrollTop[this.tabId] = document.documentElement.scrollTop
+    },
     // 当发生tab切换时，将记录的数据赋值给当前的scrollTop
     changeTab () {
       document.documentElement.scrollTop = this.tabsScrollTop[this.tabId]
     }
   },
   deactivated () {
-    // deacctivated后保存不到
-    // this.$route.meta.scrollTop = document.documentElement.screenTop
-    window.removeEventListener('scroll', () => {})
+    window.removeEventListener('scroll', this.scrollFn)
   },
   activated () {
-    window.addEventListener('scroll', () => {
-      this.$route.meta.scrollTop = document.documentElement.scrollTop
-      // 记录每一个tab item的滚动高度到数据中
-      this.tabsScrollTop[this.tabId] = document.documentElement.scrollTop
-    })
+    // 激活时恢复滚动条记忆位置
     document.documentElement.scrollTop = this.$route.meta.scrollTop
+    window.addEventListener('scroll', this.scrollFn)
   }
 }
 </script>

@@ -20,7 +20,8 @@
           v-model="user.mobile"
           name="mobile"
           placeholder="请输入手机号"
-          :rules="[{ required: true, message: '手机号不能为空', trigger: 'onBlur' },
+          :rules="[
+          { required: true, message: '手机号不能为空', trigger: 'onBlur' },
           { pattern:/^1[3-9]\d{9}$/, message: '手机号格式错误', trigger: 'onBlur' }
           ]"
         >
@@ -31,7 +32,8 @@
           name="code"
           v-model="user.code"
           placeholder="请输入验证码"
-          :rules="[{ required: true, message: '验证码不能为空', trigger: 'onBlur' },
+          :rules="[
+          { required: true, message: '验证码不能为空', trigger: 'onBlur' },
           { pattern:/\d{6}/, message: '验证码格式错误', trigger: 'onBlur' }
           ]"
         >
@@ -55,6 +57,7 @@
 
 <script>
 import { sendSMS, login } from '@/api/login.js'
+
 export default {
   name: 'loginCom',
   data () {

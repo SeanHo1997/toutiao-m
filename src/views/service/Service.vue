@@ -2,8 +2,7 @@
   <div class="container">
     <!-- 头部 -->
     <HeaderVC
-      title="智能客服"
-    />
+      title="智能客服"/>
     <!-- /头部 -->
     <!-- 中间 -->
     <div class="content" ref="content">
@@ -14,7 +13,7 @@
         </div>
         <div class="item right" v-else>
           <span class="box box-right">{{ item.msg }}</span>
-          <img class="avator" :src="$store.state.userData.photo" alt="">
+          <van-image fit="cover" round class="avator" :src="$store.state.userData.photo" alt="" />
         </div>
       </div>
     </div>
@@ -120,43 +119,52 @@ export default {
   }
   .content {
     overflow-y: auto;
-    padding-top: 92px;
-    padding-bottom: 106px;
-    .item {
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      .avator {
-        width: 75px;
-        height: 75px;
-        border-radius: 50%;
+    padding: 92px 20px 106px 20px;
+    .chat {
+      padding: 40px;
+      .item {
+        display: flex;
+        align-items: center;
+        padding:20px;
+        width: 100%;
+        .avator {
+          width: 75px;
+          height: 75px;
+          border-radius: 50%;
+        }
+        .box {
+          display: inline-block;
+          width: auto;
+          min-height: 32px;
+          background-color: #fff;
+          border-radius: 9px;
+          font-size: 32px;
+          padding: 15px;
+          margin: 20px;
+        }
       }
-      .box {
-        display: inline-block;
-        // min-width: 370px;
-        width: auto;
-        min-height: 32px;
-        background-color: #fff;
-        border-radius: 9px;
-        font-size: 32px;
-        padding: 15px;
-        margin: 20px;
+      .left {
+        .avator {
+          position: absolute;
+          left: 20px;
+        }
+        .box-left {
+          position: absolute;
+          left: 100px;
+        }
       }
-    }
-    .left {
-      float: left;
-      .box-left {
-        margin-left: 20px;
-      }
-    }
-    .right {
-      float: right;
-      .box-right {
-        margin-right: 20px;
+      .right {
+        .avator {
+          position: absolute;
+          right: 20px;
+        }
+        .box-right {
+          position: absolute;
+          right: 100px;
+        }
       }
     }
   }
-
   .input-wrap {
     position: fixed;
     bottom: 0;

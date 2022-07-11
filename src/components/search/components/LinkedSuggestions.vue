@@ -15,6 +15,7 @@
 <script>
 import { getSuggestions } from '@/api/article.js'
 import { debounce } from 'lodash'
+
 export default {
   name: 'LinkedSuggestions',
   props: {

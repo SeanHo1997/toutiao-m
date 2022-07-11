@@ -5,3 +5,7 @@ export const setItem = (name, data) => {
 export const getItem = name => {
   return JSON.parse(window.localStorage.getItem(name))
 }
+
+export const removeItem = name => {
+  return window.localStorage.removeItem(name)
+}

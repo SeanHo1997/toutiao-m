@@ -9,7 +9,7 @@
     </div>
     <van-grid :gutter="16">
       <van-grid-item class="item" :text="item.name" v-for="(item, index) in userChannels" :key="item.id"
-      :icon="editStatus && index !== 0?'cross':''"
+      :icon="editStatus && index !== 0 ? 'cross' : ''"
       @click="delOrEnterChannel(index)">
       </van-grid-item>
     </van-grid>
@@ -105,10 +105,7 @@ export default {
     position: relative;
     width: 50px;
     height: 50px;
-    // word-break: keep-all;
     white-space: nowrap;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
     .van-grid-item__content {
       background-color: whitesmoke;
     .van-icon {

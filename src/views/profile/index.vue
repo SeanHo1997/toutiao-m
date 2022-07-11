@@ -67,7 +67,7 @@
   <div class="unLogin" v-else>
     <!-- 头部区域 -->
     <div class="top top-wrap">
-      <div class="login"></div>
+      <div class="login" @click="$router.push('/login')"></div>
       <p @click="$router.push('/login')">登录 / 注册</p>
     </div>
     <!-- 收藏、历史 -->
@@ -104,10 +104,14 @@ export default {
     ...mapState(['userData'])
   },
   async created () {
-    this.getUserProfile()
+    if (this.$store.state.userInfo) {
+      this.getUserProfile()
+    }
   },
   activated () {
-    this.getUserProfile()
+    if (this.$store.state.userInfo) {
+      this.getUserProfile()
+    }
   },
   methods: {
     async getUserProfile () {

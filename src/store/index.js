@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getItem, setItem } from '@/utils/localStorage'
+import { getItem, setItem, removeItem } from '@/utils/localStorage'
 
 Vue.use(Vuex)
 
@@ -20,7 +20,7 @@ export default new Vuex.Store({
     },
     delToken (state) {
       state.userInfo = null
-      window.localStorage.removeItem(Token)
+      removeItem(Token)
     },
     addcachePages (state, pageName) {
       if (!state.cachePages.includes(pageName)) {
